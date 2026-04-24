@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Set initial states
+        gsap.set(images[0], { opacity: 1 });
         gsap.set(texts[0], { opacity: 1, y: 0 });
         
         // Loop through images to create the scrub sequence dynamically
