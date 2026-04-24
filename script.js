@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 start: "top top",
                 end: "+=5000", // Increased for 6 images
                 pin: true,
-                scrub: 1,
+                scrub: 0.5,
                 anticipatePin: 1
             }
         });
