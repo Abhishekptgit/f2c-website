@@ -56,12 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Generic reveal animations
-    gsap.utils.toArray('.gs_reveal').forEach(elem => {
+    const revealElements = document.querySelectorAll('.gs_reveal, .gs_reveal_up, .gs_reveal_left, .gs_reveal_right');
+    
+    revealElements.forEach(elem => {
         gsap.fromTo(elem, { opacity: 0, y: 50 }, {
             scrollTrigger: {
                 trigger: elem,
                 start: "top 85%",
-                toggleActions: "play none none none"
+                toggleActions: "play none none none",
+                onEnter: () => {
+                    if (elem.classList.contains('trust-bar') || elem.querySelector('.counter')) {
+                        startCounters();
+                    }
+                }
             },
             opacity: 1,
             y: 0,
