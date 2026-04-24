@@ -59,20 +59,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealElements = document.querySelectorAll('.gs_reveal, .gs_reveal_up, .gs_reveal_left, .gs_reveal_right');
     
     revealElements.forEach(elem => {
-        gsap.fromTo(elem, { opacity: 0, y: 50 }, {
+        gsap.to(elem, {
             scrollTrigger: {
                 trigger: elem,
-                start: "top 85%",
+                start: "top 90%",
                 toggleActions: "play none none none",
                 onEnter: () => {
-                    if (elem.classList.contains('trust-bar') || elem.querySelector('.counter')) {
+                    if (elem.querySelector('.counter')) {
                         startCounters();
                     }
                 }
             },
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: 1.2,
             ease: "power2.out"
         });
     });

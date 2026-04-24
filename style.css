@@ -445,7 +445,7 @@ h2 { font-size: 3rem; margin-bottom: var(--space-md); }
 .footer-bottom { border-top: 1px solid var(--border-color); padding: 2rem 0; text-align: center; color: var(--grey-text); font-size: 0.9rem; }
 
 /* GSAP Helper Classes */
-.gs_reveal { visibility: hidden; }
+.gs_reveal, .gs_reveal_up, .gs_reveal_left, .gs_reveal_right { opacity: 0; }
 
 @media (max-width: 992px) {
     .trust-container { grid-template-columns: repeat(2, 1fr); gap: 4rem 2rem; }
