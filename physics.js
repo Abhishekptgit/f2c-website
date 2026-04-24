@@ -8,6 +8,10 @@ const GravitySim = {
     isActive: false,
 
     init() {
+        if (typeof Matter === 'undefined') {
+            console.error('Matter.js not loaded');
+            return;
+        }
         const { Engine, Runner, Bodies, Composite } = Matter;
 
         // Create Engine
