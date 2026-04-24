@@ -27,12 +27,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // --- Image Preloading (Prevents stuttering) ---
+    function preloadImages() {
+        images.forEach(img => {
+            const bg = getComputedStyle(img).backgroundImage;
+            const url = bg.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+            const newImg = new Image();
+            newImg.src = url;
+        });
+    }
+    preloadImages();
+
     // --- Lenis Smooth Scroll Setup ---
     const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        orientation: 'vertical',
+        lerp: 0.1, // Softer lerp for more fluid feel
+        smoothWheel: true
     });
 
     function raf(time) {
@@ -52,50 +61,39 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // 1. Hero Pinned Scroll Animation Sequence
-    const images = document.querySelectorAll('.hero-img');
-    const texts = document.querySelectorAll('.hero-text-block');
-
     if (images.length > 0) {
+        // Force normalization to fix "shaking" or "sticking"
+        ScrollTrigger.normalizeScroll(true);
+
         const heroTl = gsap.timeline({
             scrollTrigger: {
                 trigger: ".hero-pinned",
                 start: "top top",
-                end: "+=6000", // Slightly longer for more "breathing room"
+                end: "+=6000",
                 pin: true,
-                scrub: 1.5, // Increased for a more "liquid" feel
+                scrub: 1, // Balanced scrub
                 anticipatePin: 1
             }
         });
 
         // Set initial states
-        gsap.set(images, { scale: 1.2, filter: "blur(10px)" });
-        
-        // 1. Automatic "Up to Down" Intro Animation
-        const introTl = gsap.timeline();
-        introTl.fromTo(images[0], 
-            { opacity: 0, y: -100, scale: 1.3, filter: "blur(20px)" }, 
-            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" }
-        ).fromTo(texts[0], 
-            { opacity: 0, y: -50 }, 
-            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 
-            "-=0.5"
-        );
-
-        gsap.set(texts[0], { opacity: 1, y: 0, scale: 1 });
+        gsap.set(images, { scale: 1.1 });
+        gsap.set(images[0], { opacity: 1, scale: 1 });
+        gsap.set(texts[0], { opacity: 1, y: 0 });
         
         // Loop through images to create the scrub sequence dynamically
         for(let i = 0; i < images.length - 1; i++) {
-            heroTl.to(images[i+1], { opacity: 1, scale: 1, filter: "blur(0px)", duration: 2 }, i)
-                  .to(images[i], { scale: 1.2, filter: "blur(20px)", opacity: 0.5, duration: 2 }, i) 
-                  .to(texts[i], { opacity: 0, y: -100, scale: 0.8, filter: "blur(10px)", duration: 1 }, i)
+            heroTl.to(images[i+1], { opacity: 1, scale: 1, duration: 1 }, i)
+                  .to(images[i], { scale: 1.1, opacity: 0, duration: 1 }, i) 
+                  .to(texts[i], { opacity: 0, y: -50, duration: 0.5 }, i)
                   .fromTo(texts[i+1], 
-                    { opacity: 0, y: 100, scale: 1.2, filter: "blur(10px)" }, 
-                    { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power2.out" }, 
+                    { opacity: 0, y: 50 }, 
+                    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 
                     i + 0.3
                   );
         }
 
-        // Slight pause at the end before unpinning
+        // Slight pause at the end
         heroTl.to({}, { duration: 0.5 });
     }
 
