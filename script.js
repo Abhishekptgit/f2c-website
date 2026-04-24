@@ -27,6 +27,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // --- Lenis Smooth Scroll Setup ---
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        orientation: 'vertical',
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Link Lenis to ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
     // --- GSAP Animations (Apple-style) ---
     gsap.registerPlugin(ScrollTrigger);
 
@@ -39,9 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollTrigger: {
                 trigger: ".hero-pinned",
                 start: "top top",
-                end: "+=5000", // Increased for 6 images
+                end: "+=6000", // Slightly longer for more "breathing room"
                 pin: true,
-                scrub: 0.5,
+                scrub: 1.5, // Increased for a more "liquid" feel
                 anticipatePin: 1
             }
         });
@@ -64,12 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Loop through images to create the scrub sequence dynamically
         for(let i = 0; i < images.length - 1; i++) {
-            heroTl.to(images[i+1], { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1 }, i)
-                  .to(images[i], { scale: 1.2, filter: "blur(20px)", opacity: 0.5, duration: 1 }, i) 
-                  .to(texts[i], { opacity: 0, y: -100, scale: 0.8, filter: "blur(10px)", duration: 0.6 }, i)
+            heroTl.to(images[i+1], { opacity: 1, scale: 1, filter: "blur(0px)", duration: 2 }, i)
+                  .to(images[i], { scale: 1.2, filter: "blur(20px)", opacity: 0.5, duration: 2 }, i) 
+                  .to(texts[i], { opacity: 0, y: -100, scale: 0.8, filter: "blur(10px)", duration: 1 }, i)
                   .fromTo(texts[i+1], 
                     { opacity: 0, y: 100, scale: 1.2, filter: "blur(10px)" }, 
-                    { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.8, ease: "power2.out" }, 
+                    { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power2.out" }, 
                     i + 0.3
                   );
         }
