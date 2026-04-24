@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
             header.classList.remove('scrolled');
         }
     });
+
     // --- Smooth Scrolling ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -25,22 +26,26 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
     // --- GSAP Animations (Apple-style) ---
     gsap.registerPlugin(ScrollTrigger);
+
     // 1. Hero Pinned Scroll Animation Sequence
     const images = document.querySelectorAll('.hero-img');
     const texts = document.querySelectorAll('.hero-text-block');
+
     if (images.length > 0) {
         const heroTl = gsap.timeline({
             scrollTrigger: {
                 trigger: ".hero-pinned",
                 start: "top top",
-                end: "+=3000", // 3000px of scrolling for the sequence
+                end: "+=5000", // Increased for 6 images
                 pin: true,
                 scrub: 1,
                 anticipatePin: 1
             }
         });
+
         // Set initial states
         gsap.set(texts[0], { opacity: 1, y: 0 });
         
@@ -50,9 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
                   .to(texts[i], { opacity: 0, y: -50, duration: 0.5 }, i)
                   .fromTo(texts[i+1], { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5 }, i + 0.5);
         }
+
         // Slight pause at the end before unpinning
         heroTl.to({}, { duration: 0.5 });
     }
+
     // 2. Generic Reveal Animations for Sections
     const revealElements = document.querySelectorAll('.gs_reveal, .gs_reveal_up, .gs_reveal_left, .gs_reveal_right');
     
@@ -62,8 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         else if(elem.classList.contains('gs_reveal_left')) { x = -50; }
         else if(elem.classList.contains('gs_reveal_right')) { x = 50; }
         else { y = 30; } // Default gs_reveal is slight fade up
+
         // Setup initial state
         gsap.set(elem, { autoAlpha: 0, x: x, y: y });
+
         gsap.to(elem, {
             autoAlpha: 1,
             x: 0,
@@ -77,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
     // 3. Trust Bar Counters Animation
     const counters = document.querySelectorAll('.counter');
     counters.forEach(counter => {
@@ -99,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
             once: true // only animate numbers once
         });
     });
+
     // --- Form Submission Simulation ---
     const contactForm = document.getElementById('contactForm');
     if(contactForm) {
