@@ -23,6 +23,9 @@
     
     <!-- Lenis for Silky Smooth Scrolling -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <!-- Matter.js for Gravity Physics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 </head>
 <body>
     <!-- Header & Navigation -->
@@ -291,5 +294,11 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="physics.js"></script>
+    
+    <!-- Gravity Trigger -->
+    <button onclick="GravitySim.activate()" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; padding: 10px 20px; background: var(--golden); color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        Activate Gravity
+    </button>
 </body>
 </html>
