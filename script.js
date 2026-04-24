@@ -48,7 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Set initial states
         gsap.set(images, { scale: 1.2, filter: "blur(10px)" });
-        gsap.set(images[0], { opacity: 1, scale: 1, filter: "blur(0px)" });
+        
+        // 1. Automatic "Up to Down" Intro Animation
+        const introTl = gsap.timeline();
+        introTl.fromTo(images[0], 
+            { opacity: 0, y: -100, scale: 1.3, filter: "blur(20px)" }, 
+            { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" }
+        ).fromTo(texts[0], 
+            { opacity: 0, y: -50 }, 
+            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 
+            "-=0.5"
+        );
+
         gsap.set(texts[0], { opacity: 1, y: 0, scale: 1 });
         
         // Loop through images to create the scrub sequence dynamically
